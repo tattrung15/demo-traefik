@@ -54,12 +54,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=my_network"
-      - "traefik.http.routers.demo-api-web.rule=Host(`api.trungbt.tk`)"
-      - "traefik.http.routers.demo-api-secured.rule=Host(`api.trungbt.tk`)"
-      - "traefik.http.routers.demo-api-web.entrypoints=web"
-      - "traefik.http.routers.demo-api-secured.entrypoints=web-secured"
-      - "traefik.http.routers.demo-api-web.middlewares=redirect@file"
-      - "traefik.http.routers.demo-api-secured.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.demo-api.rule=Host(`api.trungbt.tk`)"
+      - "traefik.http.routers.demo-api.entrypoints=web-secured"
+      - "traefik.http.routers.demo-api.tls.certresolver=mytlschallenge"
       - "traefik.http.services.demo-api.loadbalancer.server.port=3000"
   client:
     image: demo-traefik-app
@@ -74,12 +71,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=my_network"
-      - "traefik.http.routers.demo-app-web.rule=Host(`trungbt.tk`)"
-      - "traefik.http.routers.demo-app-secured.rule=Host(`trungbt.tk`)"
-      - "traefik.http.routers.demo-app-web.entrypoints=web"
-      - "traefik.http.routers.demo-app-secured.entrypoints=web-secured"
-      - "traefik.http.routers.demo-app-web.middlewares=redirect@file"
-      - "traefik.http.routers.demo-app-secured.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.demo-app.rule=Host(`trungbt.tk`)"
+      - "traefik.http.routers.demo-app.entrypoints=web-secured"
+      - "traefik.http.routers.demo-app.tls.certresolver=mytlschallenge"
       - "traefik.http.services.demo-app.loadbalancer.server.port=80"
 
 networks:
