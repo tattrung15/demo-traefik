@@ -52,14 +52,15 @@ services:
     networks:
       - my_network
     labels:
-      #### Labels define the behavior and rules of the traefik proxy for this container ####
-      - "traefik.enable=true" # <== Enable traefik to proxy this container
-      - "traefik.http.routers.nginx-web.rule=Host(`api.trungbt.tk`)" # <== Your Domain Name goes here for the http rule
-      - "traefik.http.routers.nginx-secured.rule=Host(`api.trungbt.tk`)" # <== Your Domain Name for the https rule
-      - "traefik.http.routers.nginx-web.entrypoints=web" # <== Defining the entrypoint for http, **ref: line 30
-      - "traefik.http.routers.nginx-secured.entrypoints=web-secured" # <== Defining entrypoint for https, **ref: line 31
-      - "traefik.http.routers.nginx-web.middlewares=redirect@file" # <== This is a middleware to redirect to https
-      - "traefik.http.routers.nginx-secured.tls.certresolver=mytlschallenge" # <== Defining certsresolvers for https
+      - "traefik.enable=true"
+      - "traefik.docker.network=my_network"
+      - "traefik.http.routers.demo-api-web.rule=Host(`api.trungbt.tk`)"
+      - "traefik.http.routers.demo-api-secured.rule=Host(`api.trungbt.tk`)"
+      - "traefik.http.routers.demo-api-web.entrypoints=web"
+      - "traefik.http.routers.demo-api-secured.entrypoints=web-secured"
+      - "traefik.http.routers.demo-api-web.middlewares=redirect@file"
+      - "traefik.http.routers.demo-api-secured.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.demo-api.loadbalancer.server.port=3000"
   client:
     image: demo-traefik-app
     container_name: demo-traefik-app
@@ -68,19 +69,18 @@ services:
       dockerfile: Dockerfile
       args:
         - REACT_APP_BASE_API=https://api.trungbt.tk
-    ports:
-      - 3001:80
     networks:
       - my_network
     labels:
-      #### Labels define the behavior and rules of the traefik proxy for this container ####
-      - "traefik.enable=true" # <== Enable traefik to proxy this container
-      - "traefik.http.routers.nginx-web.rule=Host(`trungbt.tk`)" # <== Your Domain Name goes here for the http rule
-      - "traefik.http.routers.nginx-secured.rule=Host(`trungbt.tk`)" # <== Your Domain Name for the https rule
-      - "traefik.http.routers.nginx-web.entrypoints=web" # <== Defining the entrypoint for http, **ref: line 30
-      - "traefik.http.routers.nginx-secured.entrypoints=web-secured" # <== Defining entrypoint for https, **ref: line 31
-      - "traefik.http.routers.nginx-web.middlewares=redirect@file" # <== This is a middleware to redirect to https
-      - "traefik.http.routers.nginx-secured.tls.certresolver=mytlschallenge" # <== Defining certsresolvers for https
+      - "traefik.enable=true"
+      - "traefik.docker.network=my_network"
+      - "traefik.http.routers.demo-app-web.rule=Host(`trungbt.tk`)"
+      - "traefik.http.routers.demo-app-secured.rule=Host(`trungbt.tk`)"
+      - "traefik.http.routers.demo-app-web.entrypoints=web"
+      - "traefik.http.routers.demo-app-secured.entrypoints=web-secured"
+      - "traefik.http.routers.demo-app-web.middlewares=redirect@file"
+      - "traefik.http.routers.demo-app-secured.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.demo-app.loadbalancer.server.port=80"
 
 networks:
   my_network:
