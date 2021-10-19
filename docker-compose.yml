@@ -53,11 +53,14 @@ services:
       - my_network
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=my_network"
-      - "traefik.http.routers.demo-api.rule=Host(`api.trungbt.tk`)"
-      - "traefik.http.routers.demo-api.entrypoints=web-secured"
-      - "traefik.http.routers.demo-api.tls.certresolver=mytlschallenge"
-      - "traefik.http.services.demo-api.loadbalancer.server.port=3000"
+      - "traefik.docker.network=my_network" # <== config network
+      # - "traefik.http.routers.demo-api.rule=Host(`api.trungbt.tk`)" # <== Your Domain Name goes here for the http rule
+      - "traefik.http.routers.demo-api.rule=Host(`api.trungbt.tk`)" # <== Your Domain Name for the https rule
+      # - "traefik.http.routers.demo-api.entrypoints=web" # <== Defining the entrypoint for http, **ref: line 25
+      - "traefik.http.routers.demo-api.entrypoints=web-secured" # <== Defining entrypoint for https, **ref: line 26
+      # - "traefik.http.routers.demo-api.middlewares=redirect@file" # <== This is a middleware to redirect to https
+      - "traefik.http.routers.demo-api.tls.certresolver=mytlschallenge" # <== Defining certsresolvers for https
+      - "traefik.http.services.demo-api.loadbalancer.server.port=3000" # <== 3000 is the port we proxy to
   client:
     image: demo-traefik-app
     container_name: demo-traefik-app
